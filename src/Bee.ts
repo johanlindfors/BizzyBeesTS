@@ -2,8 +2,7 @@ class Bee {
 	public color: number;
     public isSelected: boolean = false;
 
-	constructor(color: number)
-	{
+	constructor(color: number) {
 		this.color = color;
 	}
 }

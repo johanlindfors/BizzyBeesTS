@@ -3,8 +3,7 @@ class BeePicker {
 	// private SpriteBatch spriteBatch;
 	// private Texture2D beeMap;
 
-	public constructor()
-	{
+	public constructor() {
 		//beeMap = content.Load<Texture2D>("beemap");
 		//this.spriteBatch = spriteBatch;
 		this.bees = new Array<Bee>();
@@ -15,13 +14,11 @@ class BeePicker {
 		}
 	}
 
-	private addRandomBee()
-	{
+	private addRandomBee() {
 		this.bees.push(new Bee(Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1))));
 	}
 
-	public draw()
-	{
+	public draw() {
 		for (var i = 0; i < 5; i++)
 		{
 			//if(this.bees[i].IsSelected)                    
@@ -31,19 +28,16 @@ class BeePicker {
 		}
 	}
 
-	public markSelectedBee(x: number)
-	{
+	public markSelectedBee(x: number) {
 		this.getSelectedBee(x).isSelected = true;
 	}
 
-	public getSelectedBee(x: number) : Bee
-	{
+	public getSelectedBee(x: number) : Bee {
 		let index = Math.floor(x / BEE_DELTA_X);
 		return this.bees[index];
 	}
 
-	public removeAndReplaceBee(selectedBee: Bee, availableFlowers: Array<number>)
-	{
+	public removeAndReplaceBee(selectedBee: Bee, availableFlowers: Array<number>) {
 		let beeIndex = this.bees.indexOf(selectedBee);
 
 		//check if we already have a bee that matches the available flowers 
@@ -79,8 +73,7 @@ class BeePicker {
 		this.bees[beeIndex].color = color;
 	}
 
-	public deselectAll()
-	{
+	public deselectAll() {
 		this.bees.forEach(element => {
 			element.isSelected = false;
 		});

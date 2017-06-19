@@ -1,4 +1,4 @@
-class SimpleGame
+class BizzyBeesGame
 {
 	game:Phaser.Game;
 	backgroundTexture;
@@ -13,8 +13,7 @@ class SimpleGame
 	private beePicker : BeePicker = undefined;
 	private selectedBee : Bee = undefined;
 
-	constructor()
-	{
+	constructor() {
 		this.game = new Phaser.Game( 480, 800, Phaser.AUTO, 'content', { 
 			preload: this.preload,
 			create:  this.create//,
@@ -25,8 +24,7 @@ class SimpleGame
 		this.initializeColumns();
 	}
 
-	private initializeColumns()
-	{
+	private initializeColumns() {
 		this.columns = new Array<Column>();
 
 		for (let i = 0; i < 5; i++)
@@ -35,8 +33,7 @@ class SimpleGame
 		}
 	}
 	
-	preload()
-	{
+	preload() {
 		this.game.load.image( TEXTURE_BACKGROUND, "assets/GameScreenBackground.png" );
 		this.game.load.image( TEXTURE_FOREGROUND, "assets/GameScreenForeground.png" );
 		this.game.load.image( TEXTURE_HUD, "assets/HUDBackground.png" );
@@ -44,8 +41,7 @@ class SimpleGame
 		this.game.load.image( TEXTURE_BEE_MAP, "assets/beemap.png");
 	}
 	
-	create()
-	{
+	create() {
 		this.backgroundTexture = this.game.add.sprite( 0, 0, TEXTURE_BACKGROUND );
 		this.foregroundTexture = this.game.add.sprite( 0, 0, TEXTURE_FOREGROUND );
 		//this.hudTexture = this.game.add.sprite( 7,7, TEXTURE_HUD );
@@ -81,16 +77,14 @@ class SimpleGame
 		}
 	}
 
-	private handleInput(position: Phaser.Point)
-	{
+	private handleInput(position: Phaser.Point)	{
 		if (position.x > 0 && position.x < 480 && position.y > 700 && position.y < 800)
 			this.handleBeeSelection(position.x);
 		else if (this.selectedBee != null)
 			this.handleFlowerSelection(position.x, position.y);
 	}
 
-	private handleFlowerSelection(x: number, y: number)
-	{
+	private handleFlowerSelection(x: number, y: number) {
 		//verify that we are tapping inside a column
 		if (x > 10 && x < 470 && y > 100 && y < 700)
 		{
@@ -129,24 +123,22 @@ class SimpleGame
 		}
 	}
 
-	private getAvailableFlowers() : Array<number>
-	{
+	private getAvailableFlowers() : Array<number> {
 		let flowerColors = new Array<number>();
 		this.columns.forEach(element => {
 			let f = element.getBottomFlower();
 			if (f != null)
-				flowerColors.push(f.Color);
+				flowerColors.push(f.color);
 			
 		})
 		return flowerColors;
 	}
 
-	private handleBeeSelection(x: number)
-	{
+	private handleBeeSelection(x: number) {
 		//first de-select any previously selected bee
 		if (this.selectedBee != null)
 		{
-			this.selectedBee.IsSelected = false;
+			this.selectedBee.isSelected = false;
 			this.selectedBee = null;
 		}
 		//Mark and select the new bee
@@ -176,8 +168,7 @@ class SimpleGame
 		this.drawHUD();
 	}
 
-	private drawHUD()
-	{
+	private drawHUD() {
 		// spriteBatch.Draw(hudTexture, new Vector2(7, 7), Color.White);
 		// //Print out game score and level
 		// spriteBatch.DrawString(mediumFont, "Marathon", new Vector2(40, 10), Color.Blue);
@@ -195,5 +186,5 @@ class SimpleGame
 
 // when the page has finished loading, create our game
 window.onload = () => {
-	var game = new SimpleGame();
+	var game = new BizzyBeesGame();
 }

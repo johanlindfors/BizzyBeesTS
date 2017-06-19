@@ -4,8 +4,7 @@ class Column {
 
 	velocity : number = 0.4;
 
-	public constructor(x: number)
-	{
+	public constructor(x: number) {
 		this.x = x;
 		this.flowers = new Array<Flower>();
 		//this.flowerMap = content.Load<Texture2D>("flowermap");
@@ -23,14 +22,12 @@ class Column {
             return false;	
 	}
 
-	private addRandomFlower(x: number, y: number)
-	{
+	private addRandomFlower(x: number, y: number) {
 		let color = Math.floor(Math.random() * (NUMBER_OF_FLOWER_COLORS + 1));
 		this.flowers.push(new Flower(color, x, y));
 	}
 
-	public update()
-	{
+	public update() {
 		// this.flowers.forEach(element => {
 		// 	element.Y += this.velocity;
 		// });
@@ -39,23 +36,20 @@ class Column {
 		// 	this.addRandomFlower(this.x, COLUMN_TOP - FLOWER_DELTA_Y);
 	}
 
-	public draw()
-	{
+	public draw() {
 		this.flowers.forEach(element => {
 			//spriteBatch.Draw(flowerMap, new Vector2(value.X, value.Y), new Rectangle(value.Color * flowerWidth, 0, flowerWidth, flowerHeight), Color.White);
 		});
 	}
 
-	public getBottomFlower() : Flower
-	{
+	public getBottomFlower() : Flower {
 		if (this.flowers.length > 0)
 			return this.flowers[0];
 		else
 			return null;
 	}
 
-	removeBottomFlower()
-	{
+	removeBottomFlower() {
 		if (this.flowers.length > 0)
 			this.flowers.splice(0,1);
 	}
