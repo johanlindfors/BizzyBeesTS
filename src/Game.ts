@@ -16,9 +16,9 @@ class BizzyBeesGame
 	constructor() {
 		this.game = new Phaser.Game( 480, 800, Phaser.AUTO, 'content', { 
 			preload: this.preload,
-			create:  this.create//,
+			create:  this.create,
 			// update:  this.update,
-			// render:  this.render
+			render:  this.render
 		} );
 
 		this.initializeColumns();
@@ -44,13 +44,12 @@ class BizzyBeesGame
 	create() {
 		this.backgroundTexture = this.game.add.sprite( 0, 0, TEXTURE_BACKGROUND );
 		this.foregroundTexture = this.game.add.sprite( 0, 0, TEXTURE_FOREGROUND );
-		//this.hudTexture = this.game.add.sprite( 7,7, TEXTURE_HUD );
+		this.hudTexture = this.game.add.sprite( 7,7, TEXTURE_HUD );
 
-		//this.game.add.text(42, 10, "Marathon", { font: "34px Arial", fill: "#00f" });
+		this.game.add.text(42, 10, "Marathon", { font: "24px Arial", fill: "#00f" });
 
-		// this.scoreText = this.game.add.text(127, 45, this.score.toString(), { font: "24px Arial", fill: "#fff" });
-		// this.scoreText.anchor.set(0, 0);
-		// this.scoreText.visible = true;
+		this.scoreText = this.game.add.text(127, 45, "0", { font: "34px Arial" });
+		this.scoreText.visible = true;
 	}
 
 	update() {
