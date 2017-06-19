@@ -1,9 +1,9 @@
 class Bee {
-	public Color: number;
-    public IsSelected: boolean = false;
+	public color: number;
+    public isSelected: boolean = false;
 
 	constructor(color: number)
 	{
-		this.Color = color;
+		this.color = color;
 	}
 }

@@ -33,7 +33,7 @@ class BeePicker {
 
 	public markSelectedBee(x: number)
 	{
-		this.getSelectedBee(x).IsSelected = true;
+		this.getSelectedBee(x).isSelected = true;
 	}
 
 	public getSelectedBee(x: number) : Bee
@@ -58,7 +58,7 @@ class BeePicker {
 		{
 			for (let i = 0; i < this.bees.length; i++)
 			{
-				if(i != beeIndex && this.bees[i].Color in availableFlowers){
+				if(i != beeIndex && this.bees[i].color in availableFlowers){
 					match = true;
 					break;
 				}
@@ -76,13 +76,13 @@ class BeePicker {
 		}
 
 		//set the selected bee to the new color to "create" a new bee
-		this.bees[beeIndex].Color = color;
+		this.bees[beeIndex].color = color;
 	}
 
 	public deselectAll()
 	{
 		this.bees.forEach(element => {
-			element.IsSelected = false;
+			element.isSelected = false;
 		});
 	}
 }
