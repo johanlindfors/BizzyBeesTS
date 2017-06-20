@@ -1,10 +1,10 @@
 class BizzyBeesGame
 {
 	game:Phaser.Game;
-	backgroundTexture;
-	foregroundTexture;
-	hudTexture;
-	flowerMapTexture;
+	backgroundTexture: Phaser.Sprite;
+	foregroundTexture: Phaser.Sprite;
+	hudTexture: Phaser.Sprite;
+	flowerMapTexture: Phaser.Sprite;
 	score: number = 0;
 	scoreText: Phaser.Text;
 
@@ -20,17 +20,6 @@ class BizzyBeesGame
 			// update:  this.update,
 			render:  this.render
 		} );
-
-		this.initializeColumns();
-	}
-
-	private initializeColumns() {
-		this.columns = new Array<Column>();
-
-		for (let i = 0; i < 5; i++)
-		{
-			this.columns.push(new Column(i * 92 + 22));
-		}
 	}
 	
 	preload() {
@@ -50,6 +39,13 @@ class BizzyBeesGame
 
 		this.scoreText = this.game.add.text(127, 45, "0", { font: "34px Arial" });
 		this.scoreText.visible = true;
+
+		this.columns = new Array<Column>();
+		for (let i = 0; i < 5; i++)
+		{
+			this.columns.push(new Column(i * 92 + 22));
+		}
+		this.beePicker = new BeePicker();
 	}
 
 	update() {
@@ -93,7 +89,7 @@ class BizzyBeesGame
 			let selectedFlower = selectedColumn.getBottomFlower();
 
 			//check if we have a match or if it was a rainbow flower
-			if(selectedFlower != null && (selectedFlower.color == this.selectedBee.Color || selectedFlower.color == rainbowColor))
+			if(selectedFlower != null && (selectedFlower.color == this.selectedBee.color || selectedFlower.color == rainbowColor))
 			{
 				//remove the bottom flower
 				selectedColumn.removeBottomFlower();
@@ -164,7 +160,7 @@ class BizzyBeesGame
 		}
 		
 		//spriteBatch.Draw(foregroundTexture, Vector2.Zero, Color.White);
-		this.drawHUD();
+		//this.drawHUD();
 	}
 
 	private drawHUD() {
