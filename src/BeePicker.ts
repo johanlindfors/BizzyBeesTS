@@ -2,26 +2,31 @@ class BeePicker {
 	private bees: Array<Bee> = undefined;
 	// private SpriteBatch spriteBatch;
 	// private Texture2D beeMap;
+	private blueBee: Phaser.Sprite;
+	private purpleBee: Phaser.Sprite;
+	private beeGroup: Phaser.Group;
 
-	public constructor() {
+	public constructor(game: Phaser.Game) {
 		//beeMap = content.Load<Texture2D>("beemap");
 		//this.spriteBatch = spriteBatch;
 		this.bees = new Array<Bee>();
+		this.beeGroup = new Phaser.Group(game);
 		
 		for (var i = 0; i < 5; i++)
 		{
-			this.addRandomBee();
+			this.bees.push(new Bee(Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1))));
+			this.beeGroup.create(BEE_START_X + i * BEE_DELTA_X, BEE_START_Y,TEXTURE_BEE_MAP, 0);
 		}
-	}
-
-	private addRandomBee() {
-		this.bees.push(new Bee(Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1))));
 	}
 
 	public draw() {
 		for (var i = 0; i < 5; i++)
 		{
-			//if(this.bees[i].IsSelected)                    
+			//if(this.bees[i].isSelected){
+				var sprite = <Phaser.Sprite>this.beeGroup.children[i];
+				sprite.frame = this.bees[i].color;
+			//}
+
 			//	spriteBatch.Draw(beeMap, new Vector2(beeStartX + i * beeDeltaX, beeStartY), new Rectangle(bees[i].Color * 91, 0, 91, 91), Color.DimGray);
 			//else
 			//	spriteBatch.Draw(beeMap, new Vector2(beeStartX + i * beeDeltaX, beeStartY), new Rectangle(bees[i].Color * 91, 0, 91, 91), Color.White);
@@ -29,7 +34,8 @@ class BeePicker {
 	}
 
 	public markSelectedBee(x: number) {
-		this.getSelectedBee(x).isSelected = true;
+		let index = Math.floor(x / BEE_DELTA_X);
+		this.bees[index].isSelected = true;
 	}
 
 	public getSelectedBee(x: number) : Bee {

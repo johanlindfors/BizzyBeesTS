@@ -26,8 +26,8 @@ class BizzyBeesGame
 		this.game.load.image( TEXTURE_BACKGROUND, "assets/GameScreenBackground.png" );
 		this.game.load.image( TEXTURE_FOREGROUND, "assets/GameScreenForeground.png" );
 		this.game.load.image( TEXTURE_HUD, "assets/HUDBackground.png" );
-		this.game.load.image( TEXTURE_FLOWER_MAP, "assets/flowermap.png");
-		this.game.load.image( TEXTURE_BEE_MAP, "assets/beemap.png");
+		this.game.load.spritesheet( TEXTURE_FLOWER_MAP, "assets/flowermap.png", 72, 72, 7);
+		this.game.load.spritesheet( TEXTURE_BEE_MAP, "assets/beemap.png", 91, 91, 6);
 	}
 	
 	create() {
@@ -45,7 +45,7 @@ class BizzyBeesGame
 		{
 			this.columns.push(new Column(i * 92 + 22));
 		}
-		this.beePicker = new BeePicker();
+		this.beePicker = new BeePicker(this.game);
 	}
 
 	update() {
