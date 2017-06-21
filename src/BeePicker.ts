@@ -1,14 +1,8 @@
 class BeePicker {
 	private bees: Array<Bee> = undefined;
-	// private SpriteBatch spriteBatch;
-	// private Texture2D beeMap;
-	private blueBee: Phaser.Sprite;
-	private purpleBee: Phaser.Sprite;
 	private beeGroup: Phaser.Group;
 
 	public constructor(game: Phaser.Game) {
-		//beeMap = content.Load<Texture2D>("beemap");
-		//this.spriteBatch = spriteBatch;
 		this.bees = new Array<Bee>();
 		this.beeGroup = new Phaser.Group(game);
 		

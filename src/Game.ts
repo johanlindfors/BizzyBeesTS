@@ -5,7 +5,7 @@ class BizzyBeesGame
 	foregroundTexture: Phaser.Sprite;
 	hudTexture: Phaser.Sprite;
 	flowerMapTexture: Phaser.Sprite;
-	score: number = 0;
+	score: number;
 	scoreText: Phaser.Text;
 
 	private columns : Array<Column>;
@@ -19,7 +19,7 @@ class BizzyBeesGame
 			create:  this.create,
 			update:  this.update,
 			render:  this.render
-		} );
+		});
 	}
 	
 	preload() {
@@ -39,11 +39,12 @@ class BizzyBeesGame
 
 		this.scoreText = this.game.add.text(127, 45, "0", { font: "34px Arial" });
 		this.scoreText.visible = true;
+		this.score = 0;
 
 		this.columns = new Array<Column>();
 		for (let i = 0; i < 5; i++)
 		{
-			this.columns.push(new Column(i * 92 + 22));
+			this.columns.push(new Column(this.game, i * 92 + 22));
 		}
 		this.beePicker = new BeePicker(this.game);
 	}
@@ -81,8 +82,14 @@ class BizzyBeesGame
 							selectedColumn.removeBottomFlower();
 							
 							//replace the bee - making sure that there is always a match by passing in a list of all the bottom flower colors
-							let availableFlowers = this.getAvailableFlowers();
-							this.beePicker.removeAndReplaceBee(this.selectedBee, availableFlowers);
+							let flowerColors = new Array<number>();
+							this.columns.forEach(element => {
+								let f = element.getBottomFlower();
+								if (f != null)
+									flowerColors.push(f.color);
+								
+							})
+							this.beePicker.removeAndReplaceBee(this.selectedBee, flowerColors);
 
 							//deselect the bee
 							this.beePicker.deselectAll();
@@ -91,7 +98,8 @@ class BizzyBeesGame
 							//if it was a rainbow flower - add points
 							if (selectedFlower.color == rainbowColor)
 							{
-								this.score++;
+								this.score += 1;
+								this.scoreText.text = "" + this.score;
 								//if we reached 10, 20, 30... points, increase the velocity to make the game harder as we go along
 								if ((this.score % 10) == 0)
 								{
@@ -110,57 +118,13 @@ class BizzyBeesGame
 				if (element.reachedBottom)
 				{
 					this.gameOver = true;
+					var text = this.game.add.text(240,400,"GAME OVER", { font: "44px Arial" });
+					text.anchor.set(0.5,0.5);
 					return;
 				}
 			});
 		}
 	}
-
-	// private handleInput(position: Phaser.Point)	{
-	// 	if (position.x > 0 && position.x < 480 && position.y > 700 && position.y < 800)
-	// 		this.handleBeeSelection(position.x);
-	// 	else if (this.selectedBee != null)
-	// 		this.handleFlowerSelection(position.x, position.y);
-	// }
-
-	// private handleFlowerSelection(x: number, y: number) {
-	// 	//verify that we are tapping inside a column
-	// 	if (x > 10 && x < 470 && y > 100 && y < 700)
-	// 	{
-	// 		let rainbowColor = 6;
-	// 		let selectedColumnIndex = Math.floor((x - 10) / 92);
-	// 		let selectedColumn = this.columns[selectedColumnIndex];
-	// 		let selectedFlower = selectedColumn.getBottomFlower();
-
-	// 		//check if we have a match or if it was a rainbow flower
-	// 		if(selectedFlower != null && (selectedFlower.color == this.selectedBee.color || selectedFlower.color == rainbowColor))
-	// 		{
-	// 			//remove the bottom flower
-	// 			selectedColumn.removeBottomFlower();
-				
-	// 			//replace the bee - making sure that there is always a match by passing in a list of all the bottom flower colors
-	// 			let availableFlowers = this.getAvailableFlowers();
-	// 			this.beePicker.removeAndReplaceBee(this.selectedBee, availableFlowers);
-
-	// 			//deselect the bee
-	// 			this.beePicker.deselectAll();
-	// 			this.selectedBee = null;
-
-	// 			//if it was a rainbow flower - add points
-	// 			if (selectedFlower.color == rainbowColor)
-	// 			{
-	// 				this.score++;
-	// 				//if we reached 10, 20, 30... points, increase the velocity to make the game harder as we go along
-	// 				if ((this.score % 10) == 0)
-	// 				{
-	// 					this.columns.forEach(element => {
-	// 						element.velocity += 0.1;
-	// 					});
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 	private getAvailableFlowers() : Array<number> {
 		let flowerColors = new Array<number>();
@@ -174,28 +138,10 @@ class BizzyBeesGame
 	}
 
 	render() {
-		//GraphicsDevice.Clear(Color.CornflowerBlue);
-
-		//spriteBatch.Begin();
-		//spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
-
 		if (!this.gameOver)
-		{
-			this.columns.forEach(element =>{
-				element.draw();	
-			});
+		{			
 			this.beePicker.draw();
 		}
-		else
-		{
-			//spriteBatch.DrawString(largeFont, "GAME OVER", new Vector2(150, 400), Color.Red);
-		}
-		
-		// if(this.game.input.activePointer.isDown){
-		// 	this.game.debug.text("Down",100,100);
-		// }
-		//spriteBatch.Draw(foregroundTexture, Vector2.Zero, Color.White);
-		//this.drawHUD();
 	}
 
 	private drawHUD() {
