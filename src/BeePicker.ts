@@ -22,14 +22,9 @@ class BeePicker {
 	public draw() {
 		for (var i = 0; i < 5; i++)
 		{
-			//if(this.bees[i].isSelected){
-				var sprite = <Phaser.Sprite>this.beeGroup.children[i];
-				sprite.frame = this.bees[i].color;
-			//}
-
-			//	spriteBatch.Draw(beeMap, new Vector2(beeStartX + i * beeDeltaX, beeStartY), new Rectangle(bees[i].Color * 91, 0, 91, 91), Color.DimGray);
-			//else
-			//	spriteBatch.Draw(beeMap, new Vector2(beeStartX + i * beeDeltaX, beeStartY), new Rectangle(bees[i].Color * 91, 0, 91, 91), Color.White);
+			var sprite = <Phaser.Sprite>this.beeGroup.children[i];
+			sprite.frame = this.bees[i].color;
+			sprite.alpha = this.bees[i].isSelected ? 0.5 : 1.0;
 		}
 	}
 
