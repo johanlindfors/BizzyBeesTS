@@ -15,6 +15,11 @@ class Column {
 		this.addRandomFlower(x, COLUMN_TOP + 2 * FLOWER_DELTA_Y);
 		this.addRandomFlower(x, COLUMN_TOP + FLOWER_DELTA_Y);
 		this.addRandomFlower(x, COLUMN_TOP);
+
+		var mask = game.add.graphics(0,0);
+		mask.beginFill(0xFFFFFF);
+		mask.drawRect(x, 170,100,650);
+		this.flowersGroup.mask = mask;
 	}
 
 	get reachedBottom(): boolean {

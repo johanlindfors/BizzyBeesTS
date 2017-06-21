@@ -16,3 +16,8 @@ const BEE_DELTA_X = 96;
 const BEE_START_X = 5;
 const BEE_START_Y = 700;
 const NUMBER_OF_BEE_COLORS = NUMBER_OF_FLOWER_COLORS - 1;
+
+const FONT_SMALL = { font: "24px Arial", fill: "#000" };
+const FONT_MEDIUM = { font: "30px Arial", fill: "#000" };
+const FONT_LARGE = { font: "36px Arial", fill: "#000" };
+const FONT_HUGE = { font: "46px Arial", fill: "#000", fontWeight: "bold"};

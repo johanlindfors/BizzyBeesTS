@@ -6,7 +6,9 @@ class BizzyBeesGame
 	hudTexture: Phaser.Sprite;
 	flowerMapTexture: Phaser.Sprite;
 	score: number;
+	level: number;
 	scoreText: Phaser.Text;
+	levelText: Phaser.Text;
 
 	private columns : Array<Column>;
 	private gameOver : boolean = false;
@@ -35,11 +37,27 @@ class BizzyBeesGame
 		this.foregroundTexture = this.game.add.sprite( 0, 0, TEXTURE_FOREGROUND );
 		this.hudTexture = this.game.add.sprite( 7,7, TEXTURE_HUD );
 
-		this.game.add.text(42, 10, "Marathon", { font: "24px Arial", fill: "#00f" });
+		this.game.add.text(100, 28, "Marathon", FONT_MEDIUM).anchor.set(0.5,0.5);
+		//Print out instructions
+		this.game.add.text(340, 28, "Match flowers and bees", FONT_SMALL).anchor.set(0.5,0.5);
+		this.game.add.text(340, 55, "Rainbow flowers match", FONT_SMALL).anchor.set(0.5,0.5);
+		this.game.add.text(340, 80, "with all bees", FONT_SMALL).anchor.set(0.5,0.5);
+		// spriteBatch.DrawString(smallFont, "Match flowers and bees", new Vector2(210, 10), Color.Yellow);
+		// spriteBatch.DrawString(smallFont, "Rainbow flowers match", new Vector2(206, 30), Color.Yellow);
+		// spriteBatch.DrawString(smallFont, "with all bees", new Vector2(260, 50), Color.Yellow);
+		//Print out goal message
+		this.game.add.text(240, 130, "Collect Rainbow Flowers", FONT_LARGE).anchor.set(0.5,0.5);
+		// spriteBatch.DrawString(largeFont, "Collect Rainbow Flowers", new Vector2(50, 115), Color.Blue);
 
-		this.scoreText = this.game.add.text(127, 45, "0", { font: "34px Arial" });
+		this.scoreText = this.game.add.text(140, 65, "0", { font: "34px Arial" });
 		this.scoreText.visible = true;
+		this.scoreText.anchor.set(0.5,0.5);
 		this.score = 0;
+
+		this.levelText = this.game.add.text(55, 65, "1", { font: "34px Arial" });
+		this.levelText.visible = true;
+		this.levelText.anchor.set(0.5,0.5);
+		this.level = 1;
 
 		this.columns = new Array<Column>();
 		for (let i = 0; i < 5; i++)
@@ -103,6 +121,9 @@ class BizzyBeesGame
 								//if we reached 10, 20, 30... points, increase the velocity to make the game harder as we go along
 								if ((this.score % 10) == 0)
 								{
+									this.level += 1;
+									this.levelText.text = "" + this.level;
+
 									this.columns.forEach(element => {
 										element.velocity += 0.1;
 									});
@@ -118,8 +139,7 @@ class BizzyBeesGame
 				if (element.reachedBottom)
 				{
 					this.gameOver = true;
-					var text = this.game.add.text(240,400,"GAME OVER", { font: "44px Arial" });
-					text.anchor.set(0.5,0.5);
+					var text = this.game.add.text(240, 400,"GAME OVER", FONT_HUGE).anchor.set(0.5,0.5);
 					return;
 				}
 			});
