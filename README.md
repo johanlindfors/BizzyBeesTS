@@ -1,4 +1,4 @@
-#H1 BizzyBees in Typescript and Phaser.io
+# BizzyBees in Typescript and Phaser.io
 
 [Typescript] and [Phaser.io] implementation of the Bizzy Bees game originally created by [Tess Ferrandez].
 
