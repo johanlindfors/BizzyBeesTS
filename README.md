@@ -1,4 +1,5 @@
 #H1 BizzyBees in Typescript and Phaser.io
+
 [Typescript] and [Phaser.io] implementation of the Bizzy Bees game originally created by [Tess Ferrandez].
 
 
@@ -39,12 +40,12 @@ Now open your favorite browser and point it to http://localhost:5858
 The repository also contains configuration and tasks for [Visual Studio Code].
 
 Bizzy Bees can also be found in these languages/technologies:
-1. [BizzyBees in C# and XNA]
-2. [BizzyBees in C++ leveraging DirectXTK]
++ [BizzyBees in C# and XNA]
++ [BizzyBees in C++ leveraging DirectXTK]
 
 [Tess Ferrandez]: https://blogs.msdn.microsoft.com/tess/
 [Phaser.io]: http://phaser.io
 [Visual Studio Code]: http://code.visualstudio.com
 [Typescript]: http://www.typescriptlang.org
-[BizzyBees in C++]: https://blogs.msdn.microsoft.com/tess/2014/08/13/bizzy-bees-xna-to-directxdirectxtk-introduction/
-[BizzyBees in XNA]: https://blogs.msdn.microsoft.com/tess/2012/03/02/xna-for-windows-phone-walkthroughcreating-the-bizzy-bees-game/
+[BizzyBees in C++ leveraging DirectXTK]: https://blogs.msdn.microsoft.com/tess/2014/08/13/bizzy-bees-xna-to-directxdirectxtk-introduction/
+[BizzyBees in C# and XNA]: https://blogs.msdn.microsoft.com/tess/2012/03/02/xna-for-windows-phone-walkthroughcreating-the-bizzy-bees-game/
