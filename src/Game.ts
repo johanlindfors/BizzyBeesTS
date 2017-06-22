@@ -9,6 +9,7 @@ class BizzyBeesGame
 	level: number;
 	scoreText: Phaser.Text;
 	levelText: Phaser.Text;
+	gameOverText: Phaser.Text;
 
 	private columns : Array<Column>;
 	private gameOver : boolean = false;
@@ -42,12 +43,8 @@ class BizzyBeesGame
 		this.game.add.text(340, 28, "Match flowers and bees", FONT_SMALL).anchor.set(0.5,0.5);
 		this.game.add.text(340, 55, "Rainbow flowers match", FONT_SMALL).anchor.set(0.5,0.5);
 		this.game.add.text(340, 80, "with all bees", FONT_SMALL).anchor.set(0.5,0.5);
-		// spriteBatch.DrawString(smallFont, "Match flowers and bees", new Vector2(210, 10), Color.Yellow);
-		// spriteBatch.DrawString(smallFont, "Rainbow flowers match", new Vector2(206, 30), Color.Yellow);
-		// spriteBatch.DrawString(smallFont, "with all bees", new Vector2(260, 50), Color.Yellow);
 		//Print out goal message
 		this.game.add.text(240, 130, "Collect Rainbow Flowers", FONT_LARGE).anchor.set(0.5,0.5);
-		// spriteBatch.DrawString(largeFont, "Collect Rainbow Flowers", new Vector2(50, 115), Color.Blue);
 
 		this.scoreText = this.game.add.text(140, 65, "0", { font: "34px Arial" });
 		this.scoreText.visible = true;
@@ -65,12 +62,16 @@ class BizzyBeesGame
 			this.columns.push(new Column(this.game, i * 92 + 22));
 		}
 		this.beePicker = new BeePicker(this.game);
+
+		this.gameOverText = this.game.add.text(240, 400,"GAME OVER", FONT_HUGE);
+		this.gameOverText.anchor.set(0.5,0.5);
+		this.gameOverText.visible = false;
 	}
 
 	update() {
 		if (!this.gameOver)
 		{
-			if(this.game.input.activePointer.isDown){
+			if(this.game.input.activePointer.justPressed()){
 				var position = this.game.input.activePointer.position;
 				if (position.x > 0 && position.x < 480 && position.y > 700 && position.y < 800){
 					//first de-select any previously selected bee
@@ -139,10 +140,26 @@ class BizzyBeesGame
 				if (element.reachedBottom)
 				{
 					this.gameOver = true;
-					var text = this.game.add.text(240, 400,"GAME OVER", FONT_HUGE).anchor.set(0.5,0.5);
+					this.gameOverText.visible = true;
 					return;
 				}
 			});
+		}
+		else {
+			if(this.game.input.activePointer.justPressed()){
+				this.columns.forEach(element => {
+					element.reset();
+				});
+				this.beePicker.reset();
+				this.score = 0;
+				this.scoreText.text = "" + this.score;
+									
+				this.level = 1;
+				this.levelText.text = "" + this.level;
+
+				this.gameOver = false;
+				this.gameOverText.visible = false;
+			}
 		}
 	}
 
@@ -162,21 +179,6 @@ class BizzyBeesGame
 		{			
 			this.beePicker.draw();
 		}
-	}
-
-	private drawHUD() {
-		// spriteBatch.Draw(hudTexture, new Vector2(7, 7), Color.White);
-		// //Print out game score and level
-		// spriteBatch.DrawString(mediumFont, "Marathon", new Vector2(40, 10), Color.Blue);
-		// spriteBatch.DrawString(largeFont, score.ToString(), new Vector2(127, 45), Color.Yellow);
-		// //TODO: Draw a flower on the HUD
-		// spriteBatch.Draw(flowerMapTexture, new Vector2(40, 45), new Rectangle(6*72, 0, 72, 72), Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
-		// //Print out instructions
-		// spriteBatch.DrawString(smallFont, "Match flowers and bees", new Vector2(210, 10), Color.Yellow);
-		// spriteBatch.DrawString(smallFont, "Rainbow flowers match", new Vector2(206, 30), Color.Yellow);
-		// spriteBatch.DrawString(smallFont, "with all bees", new Vector2(260, 50), Color.Yellow);
-		// //Print out goal message
-		// spriteBatch.DrawString(largeFont, "Collect Rainbow Flowers", new Vector2(50, 115), Color.Blue);
 	}
 }
 

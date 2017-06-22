@@ -13,6 +13,15 @@ class BeePicker {
 		}
 	}
 
+	public reset() {
+		this.bees.splice(0,this.bees.length);
+		
+		for (var i = 0; i < 5; i++)
+		{
+			this.bees.push(new Bee(Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1))));
+		}		
+	}
+
 	public draw() {
 		for (var i = 0; i < 5; i++)
 		{

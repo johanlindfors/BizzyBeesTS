@@ -3,7 +3,7 @@ class Column {
 	private flowersGroup: Phaser.Group;
 	private x: number;
 
-	velocity : number = 0.4;
+	velocity : number = INITAL_VELOCITY;
 
 	public constructor(game: Phaser.Game, x: number) {
 		this.x = x;
@@ -20,6 +20,18 @@ class Column {
 		mask.beginFill(0xFFFFFF);
 		mask.drawRect(x, 170,100,650);
 		this.flowersGroup.mask = mask;
+	}
+
+	public reset() {
+		this.flowers.splice(0,this.flowers.length);		
+		this.flowersGroup.removeAll();
+
+		//add 3 flowers
+		this.addRandomFlower(this.x, COLUMN_TOP + 2 * FLOWER_DELTA_Y);
+		this.addRandomFlower(this.x, COLUMN_TOP + FLOWER_DELTA_Y);
+		this.addRandomFlower(this.x, COLUMN_TOP);
+
+		this.velocity = INITAL_VELOCITY;
 	}
 
 	get reachedBottom(): boolean {
