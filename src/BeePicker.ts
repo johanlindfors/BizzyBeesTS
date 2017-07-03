@@ -34,9 +34,9 @@ class BeePicker extends Phaser.Group {
                 }
             }
 
-            this.children.forEach(element =>{
-                (<Bee>element).update();
-            });
+            // this.children.forEach(element =>{
+            //     (<Bee>element).update();
+            // });
         }
     }
 
