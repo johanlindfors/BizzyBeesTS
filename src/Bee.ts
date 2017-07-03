@@ -1,10 +1,10 @@
 class Bee extends Phaser.Sprite {
-    public color: number;
-    public isSelected: boolean;
+    color: number;
+    isSelected: boolean;
 
-    public constructor(game: Phaser.Game, x: number, y: number, key: string, frame: number) {
+    constructor(game: Phaser.Game, x: number, y: number, key: string, frame: number) {
         super(game,x,y,key,frame);
-
+        
         this.color = frame;
         this.isSelected = false;        
     }

@@ -17,6 +17,7 @@ class BeePicker extends Phaser.Group {
                 TEXTURE_BEE_MAP,
                 Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1)));
         }
+        this.alive = true;
     }
     
     public update(){
@@ -32,6 +33,10 @@ class BeePicker extends Phaser.Group {
                     }
                 }
             }
+
+            this.children.forEach(element =>{
+                (<Bee>element).update();
+            });
         }
     }
 

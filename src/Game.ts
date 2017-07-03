@@ -12,7 +12,6 @@ class BizzyBeesGame {
     columns : Array<Column>;
     gameOver : boolean;
     beePicker : BeePicker;
-    //localBee: Bee;
 
     constructor() {
         this.game = new Phaser.Game( 480, 800, Phaser.AUTO, 'content', { 
@@ -138,7 +137,6 @@ class BizzyBeesGame {
                     element.reset();
                 });
                 this.beePicker.reset();
-                this.beePicker.alive = true;
                 this.score = 0;
                 this.scoreText.text = "" + this.score;
 
@@ -149,16 +147,6 @@ class BizzyBeesGame {
                 this.gameOverText.visible = false;
             }
         }
-    }
-
-    private getAvailableFlowers() : Array<number> {
-        let flowerColors = new Array<number>();
-        // this.columns.forEach(element => {
-        //     let f = element.getBottomFlower();
-        //     if (f != null)
-        //         flowerColors.push(f.color);
-        // });
-        return flowerColors;
     }
 }
 
