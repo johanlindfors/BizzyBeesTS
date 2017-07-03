@@ -33,11 +33,8 @@ class BeePicker extends Phaser.Group {
                     }
                 }
             }
-
-            // this.children.forEach(element =>{
-            //     (<Bee>element).update();
-            // });
         }
+        super.update();
     }
 
     public getSelectedBee() : Bee {
