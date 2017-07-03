@@ -1,45 +1,70 @@
-class BeePicker {
-    private bees: Array<Bee> = undefined;
-    private beeGroup: Phaser.Group;
+class BeePicker extends Phaser.Group {
+//    private bees: Array<Bee> = undefined;
 
     public constructor(game: Phaser.Game) {
-        this.bees = new Array<Bee>();
-        this.beeGroup = new Phaser.Group(game);
+        super(game);
+//        this.bees = new Array<Bee>();
 
         for (var i = 0; i < 5; i++) {
-            this.bees.push(new Bee(Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1))));
-            this.beeGroup.create(BEE_START_X + i * BEE_DELTA_X, BEE_START_Y,TEXTURE_BEE_MAP, 0);
+            let bee = new Bee(
+                game,
+                BEE_START_X + i * BEE_DELTA_X,
+                BEE_START_Y,
+                TEXTURE_BEE_MAP,
+                Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1)));
+            this.add(bee);
+            //this.create(BEE_START_X + i * BEE_DELTA_X, BEE_START_Y,TEXTURE_BEE_MAP, 0);
         }
     }
 
     public reset() {
-        this.bees.splice(0,this.bees.length);
+        this.removeAll();
+
+        //this.bees.splice(0,this.bees.length);
 
         for (var i = 0; i < 5; i++) {
-            this.bees.push(new Bee(Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1))));
+            let bee = new Bee(
+                this.game,
+                BEE_START_X + i * BEE_DELTA_X,
+                BEE_START_Y,
+                TEXTURE_BEE_MAP,
+                Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1)));
+            this.add(bee);
+        }
+    }
+    
+    public update(){
+        if(!this.alive)
+           return;
+
+        if(this.game.input.activePointer.justPressed()) {
+            var position = this.game.input.activePointer.position;
+            if(position.y > 700){
+                let selectedBeeIndex = Math.floor(position.x / BEE_DELTA_X);
+
+                for (var index = 0; index < this.children.length; index++) {
+                    var bee = <Bee>this.children[index];
+                    bee.isSelected = index == selectedBeeIndex;
+                    bee.update();
+                }
+            }
         }
     }
 
-    public draw() {
-        for (var i = 0; i < 5; i++) {
-            var sprite = <Phaser.Sprite>this.beeGroup.children[i];
-            sprite.frame = this.bees[i].color;
-            sprite.alpha = this.bees[i].isSelected ? 0.5 : 1.0;
-        }
+    public getSelectedBee() : Bee {
+        let selectedBee = undefined;
+        this.children.forEach(element => {
+            var bee = <Bee>element;
+            if(bee.isSelected) {
+                selectedBee = bee;
+            }
+        });
+        return selectedBee;
     }
 
-    public markSelectedBee(x: number) {
-        let index = Math.floor(x / BEE_DELTA_X);
-        this.bees[index].isSelected = true;
-    }
-
-    public getSelectedBee(x: number) : Bee {
-        let index = Math.floor(x / BEE_DELTA_X);
-        return this.bees[index];
-    }
-
-    public removeAndReplaceBee(selectedBee: Bee, availableFlowers: Array<number>) {
-        let beeIndex = this.bees.indexOf(selectedBee);
+    public removeAndReplaceSelectedBee(availableFlowers: Array<number>) {
+        let selectedBee = this.getSelectedBee();
+        let beeIndex = this.children.indexOf(selectedBee);
 
         //check if we already have a bee that matches the available flowers 
         //remember to skip over the selectedBee since it will be removed in a moment
@@ -50,8 +75,9 @@ class BeePicker {
         if (rainbowColor in availableFlowers)
             match = true;
         else {
-            for (let i = 0; i < this.bees.length; i++) {
-                if(i != beeIndex && this.bees[i].color in availableFlowers) {
+            for (let i = 0; i < this.length; i++) {
+                let bee = <Bee>this.children[i];
+                if(i != beeIndex && bee.color in availableFlowers) {
                     match = true;
                     break;
                 }
@@ -67,13 +93,17 @@ class BeePicker {
             color = availableFlowers[Math.floor(Math.random() * (availableFlowers.length + 1))];
         }
 
+        selectedBee.color = color;
+        selectedBee.isSelected = false;
+
         //set the selected bee to the new color to "create" a new bee
-        this.bees[beeIndex].color = color;
+        //(<Bee>this.children[beeIndex]).color = color;
     }
 
     public deselectAll() {
-        this.bees.forEach(element => {
-            element.isSelected = false;
+        this.children.forEach(element => {
+            let bee = <Bee>element;
+            bee.isSelected = false;
         });
     }
 }

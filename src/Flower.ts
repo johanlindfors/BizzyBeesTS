@@ -1,11 +1,10 @@
-class Flower {
+class Flower extends Phaser.Sprite {
     color: number;
     x: number;
     y: number;
 
-    public constructor(color: number, x: number, y: number) {
-        this.color = color;
-        this.x = x;
-        this.y = y;
+    constructor(game: Phaser.Game, x: number, y: number, key: string, frame: number) {
+        super(game,x,y,key,frame);
+        this.color = frame;
     }
 }

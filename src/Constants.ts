@@ -6,6 +6,8 @@ const FLOWER_WIDTH = 72;
 const FLOWER_HEIGHT = 72;
 const COLUMN_BOTTOM = 620;
 const INITAL_VELOCITY = 0.4;
+const FLOWER_COLUMN_WIDTH = 92;
+const FLOWER_COLUMN_MARGIN = 22;
 
 const TEXTURE_BACKGROUND = "backgroundTexture"
 const TEXTURE_FOREGROUND = "foregroundTexture"

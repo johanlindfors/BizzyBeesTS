@@ -12,14 +12,13 @@ class BizzyBeesGame {
     columns : Array<Column>;
     gameOver : boolean = false;
     beePicker : BeePicker = undefined;
-    selectedBee : Bee = undefined;
 
     constructor() {
         this.game = new Phaser.Game( 480, 800, Phaser.AUTO, 'content', { 
             preload: this.preload,
             create:  this.create,
             update:  this.update,
-            render:  this.render
+            //render:  this.render
         });
     }
 
@@ -32,6 +31,9 @@ class BizzyBeesGame {
     }
 
     create() {
+        this.score = 0;
+        this.level = 1;
+
         this.backgroundTexture = this.game.add.sprite( 0, 0, TEXTURE_BACKGROUND );
         this.foregroundTexture = this.game.add.sprite( 0, 0, TEXTURE_FOREGROUND );
         this.hudTexture = this.game.add.sprite( 7,7, TEXTURE_HUD );
@@ -47,16 +49,14 @@ class BizzyBeesGame {
         this.scoreText = this.game.add.text(140, 65, "0", { font: "34px Arial" });
         this.scoreText.visible = true;
         this.scoreText.anchor.set(0.5,0.5);
-        this.score = 0;
 
         this.levelText = this.game.add.text(55, 65, "1", { font: "34px Arial" });
         this.levelText.visible = true;
         this.levelText.anchor.set(0.5,0.5);
-        this.level = 1;
 
         this.columns = new Array<Column>();
         for (let i = 0; i < 5; i++) {
-            this.columns.push(new Column(this.game, i * 92 + 22));
+            this.columns.push(new Column(this.game, i));
         }
         this.beePicker = new BeePicker(this.game);
 
@@ -69,26 +69,17 @@ class BizzyBeesGame {
         if (!this.gameOver) {
             if(this.game.input.activePointer.justPressed()) {
                 var position = this.game.input.activePointer.position;
-                if (position.x > 0 && position.x < 480 && position.y > 700 && position.y < 800) {
-                    //first de-select any previously selected bee
-                    if (this.selectedBee != null) {
-                        this.selectedBee.isSelected = false;
-                        this.selectedBee = null;
-                    }
-                    //Mark and select the new bee
-                    this.beePicker.deselectAll();
-                    this.beePicker.markSelectedBee(position.x);
-                    this.selectedBee = this.beePicker.getSelectedBee(position.x);
-                } else if (this.selectedBee != null) {
+                let selectedBee = this.beePicker.getSelectedBee();
+                if (selectedBee != undefined) {
                     //verify that we are tapping inside a column
                     if (position.x > 10 && position.x < 470 && position.y > 100 && position.y < 700) {
                         let rainbowColor = 6;
-                        let selectedColumnIndex = Math.floor((position.x - 10) / 92);
+                        let selectedColumnIndex = Math.floor((position.x - 10) / FLOWER_COLUMN_WIDTH);
                         let selectedColumn = this.columns[selectedColumnIndex];
                         let selectedFlower = selectedColumn.getBottomFlower();
 
                         //check if we have a match or if it was a rainbow flower
-                        if(selectedFlower != null && (selectedFlower.color == this.selectedBee.color || selectedFlower.color == rainbowColor)) {
+                        if(selectedFlower != null && (selectedFlower.color == selectedBee.color || selectedFlower.color == rainbowColor)) {
                             //remove the bottom flower
                             selectedColumn.removeBottomFlower();
 
@@ -100,11 +91,10 @@ class BizzyBeesGame {
                                     flowerColors.push(f.color);
 
                             });
-                            this.beePicker.removeAndReplaceBee(this.selectedBee, flowerColors);
+                            this.beePicker.removeAndReplaceSelectedBee(selectedBee, flowerColors);
 
                             //deselect the bee
                             this.beePicker.deselectAll();
-                            this.selectedBee = null;
 
                             //if it was a rainbow flower - add points
                             if (selectedFlower.color == rainbowColor) {
@@ -125,20 +115,29 @@ class BizzyBeesGame {
                 }
             }
 
+            var hasAnyFlowerReachedBottom = false;
             this.columns.forEach(element => {
-                element.update();
                 if (element.reachedBottom) {
-                    this.gameOver = true;
-                    this.gameOverText.visible = true;
-                    return;
+                    hasAnyFlowerReachedBottom = true;
                 }
             });
+
+            if(hasAnyFlowerReachedBottom){
+                this.gameOver = true;
+                this.beePicker.alive = false;
+                this.gameOverText.visible = true;
+                this.columns.forEach(element => {
+                    element.alive = false;
+                });
+            }
+
         } else {
             if(this.game.input.activePointer.justPressed()) {
                 this.columns.forEach(element => {
                     element.reset();
                 });
                 this.beePicker.reset();
+                this.beePicker.alive = true;
                 this.score = 0;
                 this.scoreText.text = "" + this.score;
 
@@ -153,18 +152,18 @@ class BizzyBeesGame {
 
     private getAvailableFlowers() : Array<number> {
         let flowerColors = new Array<number>();
-        this.columns.forEach(element => {
-            let f = element.getBottomFlower();
-            if (f != null)
-                flowerColors.push(f.color);
-        });
+        // this.columns.forEach(element => {
+        //     let f = element.getBottomFlower();
+        //     if (f != null)
+        //         flowerColors.push(f.color);
+        // });
         return flowerColors;
     }
 
     render() {
-        if (!this.gameOver) {
-            this.beePicker.draw();
-        }
+        // if (!this.gameOver) {
+        //     this.beePicker.draw();
+        // }
     }
 }
 
