@@ -1,15 +1,15 @@
 class Column extends Phaser.Group {
-    // private flowers: Array<Flower>;
-    // private flowersGroup: Phaser.Group;
     private col: number;
 
     velocity : number = INITAL_VELOCITY;
 
     public constructor(game: Phaser.Game, col: number) {
         super(game);
+        game.add.existing(this);
 
         this.col = col * FLOWER_COLUMN_WIDTH + FLOWER_COLUMN_MARGIN;
-        //this.flowerMap = content.Load<Texture2D>("flowermap");
+        this.classType = Flower;
+
         this.reset();
         
         var mask = game.add.graphics(0,0);
@@ -36,8 +36,7 @@ class Column extends Phaser.Group {
 
     private addRandomFlower(x: number, y: number) {
         let color = Math.floor(Math.random() * (NUMBER_OF_FLOWER_COLORS + 1));
-        let flower = new Flower(this.game,x,y,TEXTURE_FLOWER_MAP,color);
-        this.add(flower);
+        this.create(x,y,TEXTURE_FLOWER_MAP,color);
     }
 
     public update() {

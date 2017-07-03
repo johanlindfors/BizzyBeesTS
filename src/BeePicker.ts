@@ -1,51 +1,35 @@
 class BeePicker extends Phaser.Group {
-//    private bees: Array<Bee> = undefined;
-
     public constructor(game: Phaser.Game) {
         super(game);
-//        this.bees = new Array<Bee>();
+        game.add.existing(this);
+        this.classType = Bee;
 
-        for (var i = 0; i < 5; i++) {
-            let bee = new Bee(
-                game,
-                BEE_START_X + i * BEE_DELTA_X,
-                BEE_START_Y,
-                TEXTURE_BEE_MAP,
-                Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1)));
-            this.add(bee);
-            //this.create(BEE_START_X + i * BEE_DELTA_X, BEE_START_Y,TEXTURE_BEE_MAP, 0);
-        }
+        this.reset();
     }
 
     public reset() {
         this.removeAll();
 
-        //this.bees.splice(0,this.bees.length);
-
         for (var i = 0; i < 5; i++) {
-            let bee = new Bee(
-                this.game,
+            this.create(
                 BEE_START_X + i * BEE_DELTA_X,
                 BEE_START_Y,
                 TEXTURE_BEE_MAP,
                 Math.floor(Math.random() * (NUMBER_OF_BEE_COLORS + 1)));
-            this.add(bee);
         }
     }
     
     public update(){
-        if(!this.alive)
-           return;
+        if(this.alive) {
+            if(this.game.input.activePointer.justPressed()) {
+                var position = this.game.input.activePointer.position;
+                if(position.y > 700){
+                    let selectedBeeIndex = Math.floor(position.x / BEE_DELTA_X);
 
-        if(this.game.input.activePointer.justPressed()) {
-            var position = this.game.input.activePointer.position;
-            if(position.y > 700){
-                let selectedBeeIndex = Math.floor(position.x / BEE_DELTA_X);
-
-                for (var index = 0; index < this.children.length; index++) {
-                    var bee = <Bee>this.children[index];
-                    bee.isSelected = index == selectedBeeIndex;
-                    bee.update();
+                    for (var index = 0; index < this.children.length; index++) {
+                        var bee = <Bee>this.children[index];
+                        bee.isSelected = index == selectedBeeIndex;
+                    }
                 }
             }
         }
@@ -53,10 +37,13 @@ class BeePicker extends Phaser.Group {
 
     public getSelectedBee() : Bee {
         let selectedBee = undefined;
-        this.children.forEach(element => {
+        this.children.some(element => {
             var bee = <Bee>element;
             if(bee.isSelected) {
                 selectedBee = bee;
+                return true;
+            } else {
+                return false;
             }
         });
         return selectedBee;
@@ -64,6 +51,9 @@ class BeePicker extends Phaser.Group {
 
     public removeAndReplaceSelectedBee(availableFlowers: Array<number>) {
         let selectedBee = this.getSelectedBee();
+        if(selectedBee == undefined)
+            return;
+
         let beeIndex = this.children.indexOf(selectedBee);
 
         //check if we already have a bee that matches the available flowers 
@@ -95,9 +85,6 @@ class BeePicker extends Phaser.Group {
 
         selectedBee.color = color;
         selectedBee.isSelected = false;
-
-        //set the selected bee to the new color to "create" a new bee
-        //(<Bee>this.children[beeIndex]).color = color;
     }
 
     public deselectAll() {

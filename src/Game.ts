@@ -10,15 +10,15 @@ class BizzyBeesGame {
     levelText: Phaser.Text;
     gameOverText: Phaser.Text;
     columns : Array<Column>;
-    gameOver : boolean = false;
-    beePicker : BeePicker = undefined;
+    gameOver : boolean;
+    beePicker : BeePicker;
+    //localBee: Bee;
 
     constructor() {
         this.game = new Phaser.Game( 480, 800, Phaser.AUTO, 'content', { 
             preload: this.preload,
             create:  this.create,
             update:  this.update,
-            //render:  this.render
         });
     }
 
@@ -33,6 +33,7 @@ class BizzyBeesGame {
     create() {
         this.score = 0;
         this.level = 1;
+        this.gameOver = false;
 
         this.backgroundTexture = this.game.add.sprite( 0, 0, TEXTURE_BACKGROUND );
         this.foregroundTexture = this.game.add.sprite( 0, 0, TEXTURE_FOREGROUND );
@@ -91,7 +92,7 @@ class BizzyBeesGame {
                                     flowerColors.push(f.color);
 
                             });
-                            this.beePicker.removeAndReplaceSelectedBee(selectedBee, flowerColors);
+                            this.beePicker.removeAndReplaceSelectedBee(flowerColors);
 
                             //deselect the bee
                             this.beePicker.deselectAll();
@@ -158,12 +159,6 @@ class BizzyBeesGame {
         //         flowerColors.push(f.color);
         // });
         return flowerColors;
-    }
-
-    render() {
-        // if (!this.gameOver) {
-        //     this.beePicker.draw();
-        // }
     }
 }
 
