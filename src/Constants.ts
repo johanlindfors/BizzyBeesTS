@@ -9,11 +9,12 @@ const INITAL_VELOCITY = 0.4;
 const FLOWER_COLUMN_WIDTH = 92;
 const FLOWER_COLUMN_MARGIN = 22;
 
-const TEXTURE_BACKGROUND = "backgroundTexture"
-const TEXTURE_FOREGROUND = "foregroundTexture"
-const TEXTURE_FLOWER_MAP = "flowerMap"
-const TEXTURE_BEE_MAP = "beeMap"
-const TEXTURE_HUD = "hudBackground"
+const TEXTURE_BACKGROUND = "backgroundTexture";
+const TEXTURE_FOREGROUND = "foregroundTexture";
+const TEXTURE_FLOWER_MAP = "flowerMap";
+const TEXTURE_BEE_MAP = "beeMap";
+const TEXTURE_HUD = "hudBackground";
+const TEXTURE_PRELOADBAR = "preloadBar";
 
 const BEE_DELTA_X = 96;
 const BEE_START_X = 5;
@@ -24,3 +25,8 @@ const FONT_SMALL = { font: "24px Arial", fill: "#000" };
 const FONT_MEDIUM = { font: "30px Arial", fill: "#000" };
 const FONT_LARGE = { font: "36px Arial", fill: "#000" };
 const FONT_HUGE = { font: "46px Arial", fill: "#000", fontWeight: "bold"};
+
+const STATE_GAME = "GameState";
+const STATE_PRELOADER = "PreloaderState";
+const STATE_BOOT = "BootState";
+const STATE_GAME_OVER = "GameOverState";
